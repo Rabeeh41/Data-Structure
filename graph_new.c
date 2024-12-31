@@ -47,6 +47,39 @@ void dfs_start(int start) {
     printf("\n");
 }
 
+// Topological Sort Helper Function
+void topologicalSortUtil(int node, int stack[], int *stackIndex) {
+    visited[node] = 1;
+
+    for (int i = 0; i < vertices; i++) {
+        if (graph[node][i] == 1 && !visited[i]) {
+            topologicalSortUtil(i, stack, stackIndex);
+        }
+    }
+
+    stack[(*stackIndex)++] = node; // Push the node onto the stack
+}
+
+// Topological Sort Function
+void topologicalSort() {
+    int stack[MAX_VERTICES];
+    int stackIndex = 0;
+
+    memset(visited, 0, sizeof(visited)); // Reset visited array
+
+    for (int i = 0; i < vertices; i++) {
+        if (!visited[i]) {
+            topologicalSortUtil(i, stack, &stackIndex);
+        }
+    }
+
+    printf("Topological Sort: ");
+    for (int i = stackIndex - 1; i >= 0; i--) { // Print nodes in reverse stack order
+        printf("%d ", stack[i]);
+    }
+    printf("\n");
+}
+
 int main() {
     printf("Enter the number of vertices: ");
     scanf("%d", &vertices);
@@ -83,11 +116,12 @@ int main() {
         printf("\nChoose an operation:\n");
         printf("1. BFS\n");
         printf("2. DFS (from a specific vertex)\n");
-        printf("3. Exit\n");
+        printf("3. Topological Sort\n");
+        printf("4. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
-        if (choice == 3) {
+        if (choice == 4) {
             printf("Exiting program.\n");
             break;
         }
@@ -116,6 +150,9 @@ int main() {
                 }
                 break;
             }
+            case 3:
+                topologicalSort();
+                break;
             default:
                 printf("Invalid choice. Please try again.\n");
                 break;
