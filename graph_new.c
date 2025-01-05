@@ -11,8 +11,7 @@ int vertices;
 void bfs(int start) {
     int queue[MAX_VERTICES], front = -1, rear = -1;
     visited[start] = 1;
-    queue[++rear] = start;
-    
+    queue[++rear] = start;    
     printf("BFS: ");
     while (front != rear) {
         front++;
@@ -44,29 +43,30 @@ void dfs_start(int start) {
     memset(visited, 0, sizeof(visited)); // Reset visited array
     printf("DFS: ");
     dfs(start);
+    for(int i=0;i<vertices;i++){
+        for(int j=0;j<vertices;j++){
+            if(graph[i][j]==1 && !visited[i]){
+            dfs(i);
+        }
+        }
+    }
     printf("\n");
 }
 
-// Topological Sort Helper Function
 void topologicalSortUtil(int node, int stack[], int *stackIndex) {
     visited[node] = 1;
-
     for (int i = 0; i < vertices; i++) {
         if (graph[node][i] == 1 && !visited[i]) {
             topologicalSortUtil(i, stack, stackIndex);
         }
     }
-
     stack[(*stackIndex)++] = node; // Push the node onto the stack
 }
 
-// Topological Sort Function
 void topologicalSort() {
     int stack[MAX_VERTICES];
     int stackIndex = 0;
-
-    memset(visited, 0, sizeof(visited)); // Reset visited array
-
+    memset(visited, 0, sizeof(visited)); 
     for (int i = 0; i < vertices; i++) {
         if (!visited[i]) {
             topologicalSortUtil(i, stack, &stackIndex);
@@ -82,8 +82,7 @@ void topologicalSort() {
 
 int main() {
     printf("Enter the number of vertices: ");
-    scanf("%d", &vertices);
-    
+    scanf("%d", &vertices);   
     for (int i = 0; i < vertices; i++) {
         int v;
         printf("\nFor vertex %d, choose vertices to connect to:\n", i);
@@ -101,8 +100,6 @@ int main() {
             }
         }
     }
-
-    // Display the adjacency matrix
     printf("\nAdjacency Matrix:\n");
     for (int i = 0; i < vertices; i++) {
         for (int j = 0; j < vertices; j++) {
@@ -110,7 +107,6 @@ int main() {
         }
         printf("\n");
     }
-
     while (1) {
         int choice;
         printf("\nChoose an operation:\n");
@@ -120,12 +116,10 @@ int main() {
         printf("4. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
-
         if (choice == 4) {
             printf("Exiting program.\n");
             break;
         }
-
         switch (choice) {
             case 1: {
                 int start;
