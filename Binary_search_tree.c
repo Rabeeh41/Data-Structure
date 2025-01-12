@@ -81,6 +81,14 @@ struct node* search(struct node* root, int key)
         }
 }
 
+struct node* minValueNode(struct node* node){
+    struct node* current = node;
+    while (current && current->left != NULL)
+        current = current->left;
+    return current;
+}
+
+
 struct node* deleteNode(struct node* root, int key)
 {
         if(root == NULL){
